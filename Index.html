@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JAKEY • Intelligent Digital Ventures</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Satoshi:wght@400;500;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #000000;
+      --bg-secondary: #080b14;
+      --text-primary: #e8e8e8;
+      --text-secondary: #94a3b8;
+      --accent: #00ffd5;
+      --accent-dark: #00c4a8;
+      --gradient-start: #00ffd5;
+      --gradient-mid: #4facfe;
+      --gradient-end: #7b5eff;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: rgba(255,255,255,0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Cinematic Background */
+    #hero-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 24px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    header.scrolled {
+      padding: 16px 5%;
+      background: rgba(0,0,0,0.8);
+    }
+
+    .logo {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav a {
+      color: #aaaaaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-left: 32px;
+      transition: color 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    .hero {
+      padding: 220px 6% 140px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: 'Satoshi', sans-serif;
+      font-size: clamp(3.2rem, 8vw, 6.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -3px;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero .highlight {
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 0 auto 3rem;
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .btn {
+      padding: 18px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(0, 255, 213, 0.05);
+      transform: translateY(-3px);
+    }
+
+    section { padding: 120px 6%; }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 6rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Satoshi', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(0,255,213,0.1);
+      color: var(--accent);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .card h3 {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 100px 6% 60px;
+      color: #555;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--card-border);
+      letter-spacing: 0.5px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding-top: 160px; }
+      nav { display: none; }
+      .cta-buttons { flex-direction: column; padding: 0 10%; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="hero-canvas"></canvas>
+
+<header id="header">
+  <div class="logo">JAKEY<span style="color:var(--accent);">.</span>ai</div>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#ventures">Ventures</a>
+    <a href="#capabilities">Capabilities</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 class="fade-in">Building <span class="highlight">Intelligent Digital Ventures</span><br>for Africa and the World</h1>
+  <p class="fade-in">
+    Jakey is an AI-native venture studio engineering sovereign data infrastructure, creator economies, and real-time media systems — built in Nairobi, scaling globally.
+  </p>
+  <div class="cta-buttons fade-in">
+    <a href="#ventures" class="btn btn-primary">Explore Ecosystem</a>
+    <a href="mailto:gilliannyagaga95@gmail.com" class="btn btn-secondary">Partner With Us</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-title">
+    <h2 class="fade-in">Who We Are</h2>
+    <p class="fade-in">Engineering sovereign intelligence and digital ownership for the African century.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card fade-in">
+      <div class="badge">AI DATA FOUNDATION</div>
+      <h3>Proprietary Dataset Infrastructure</h3>
+      <p>Multi-modal behavioral datasets and African-language intelligence systems that power next-generation automation.</p>
+    </div>
+
+    <div class="card fade-in">
+      <div class="badge">PRODUCT ENGINEERING</div>
+      <h3>End-to-End Product Studios</h3>
+      <p>Full-cycle fintech and streaming platforms — from concept to 10M+ user scale with obsessive focus on performance.</p>
+    </div>
+
+    <div class="card fade-in">
+      <div class="badge">OPERATIONAL OS</div>
+      <h3>Intelligence & Automation</h3>
+      <p>Workflow orchestration and decision systems that remove 90% of operational drag for digital businesses.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ventures">
+  <div class="section-title">
+    <h2 class="fade-in">Our Digital Ventures</h2>
+    <p class="fade-in">Solving foundational layers of the emerging African digital economy.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card fade-in">
+      <div class="badge">CREATOR ECONOMY</div>
+      <h3>Influensa</h3>
+      <p>Sovereign creator OS — digital identity, attention monetization, and on-chain value capture for Africa’s influencers.</p>
+    </div>
+
+    <div class="card fade-in">
+      <div class="badge">DIGITAL EDUCATION</div>
+      <h3>Greenbook</h3>
+      <p>A portable, fully paperless digital school system. Revolutionizing knowledge delivery for the mobile-first generation.</p>
+    </div>
+
+    <div class="card fade-in">
+      <div class="badge">INTERACTIVE MEDIA</div>
+      <h3>Streamer</h3>
+      <p>Ultra-low-latency streaming backbone built for Africa’s high-bandwidth, mobile-first future.</p>
+    </div>
+
+    <div class="card fade-in">
+      <div class="badge">PAYMENTS</div>
+      <h3>Lipa</h3>
+      <p>Borderless payment orchestration and settlement intelligence designed for fragmented African markets.</p>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities">
+  <div class="section-title">
+    <h2 class="fade-in">Core Capabilities</h2>
+    <p class="fade-in">What we build at scale — today and tomorrow.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card fade-in">Large-scale AI dataset creation & labeling</div>
+    <div class="card fade-in">Behavioral & multimodal ML pipelines</div>
+    <div class="card fade-in">Fintech APIs & payment orchestration</div>
+    <div class="card fade-in">Ultra-low-latency streaming infrastructure</div>
+    <div class="card fade-in">Agentic automation & workflow intelligence</div>
+    <div class="card fade-in">African-language NLP & cultural context models</div>
+  </div>
+</section>
+
+<footer>
+  © 2026 JAKEY Limited • Intelligent Digital Venture Studio<br>
+  Proudly built in Nairobi, Kenya
+</footer>
+
+<script>
+  // 1. Particle Background Animation
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.fillStyle = 'rgba(0, 255, 213, 0.4)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    resize();
+    for (let i = 0; i < 100; i++) particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', resize);
+  init(); animate();
+
+  // 2. Scroll Header Logic
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // 3. Scroll Reveal Logic
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // 4. Card Tilt Effect
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xPercent = (x / rect.width - 0.5) * 10;
+      const yPercent = (y / rect.height - 0.5) * 10;
+      card.style.transform = `perspective(1000px) rotateX(${-yPercent}deg) rotateY(${xPercent}deg) translateY(-5px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
+    });
+  });
+</script>
+
+</body>
+</html>

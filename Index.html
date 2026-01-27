@@ -182,6 +182,7 @@
       gap: 30px;
     }
 
+    /* Standard Card */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -198,6 +199,39 @@
     .card:hover {
       border-color: var(--accent);
       background: rgba(255,255,255,0.06);
+    }
+
+    /* Expandable Capability Cards */
+    .capability-card {
+      cursor: pointer;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .capability-card .details {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: 0;
+    }
+
+    .capability-card.expanded {
+      background: rgba(0, 255, 213, 0.05);
+      border-color: var(--accent);
+    }
+
+    .capability-card.expanded .details {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0, 255, 213, 0.2);
     }
 
     .badge {
@@ -232,7 +266,6 @@
       color: #555;
       font-size: 0.9rem;
       border-top: 1px solid var(--card-border);
-      letter-spacing: 0.5px;
     }
 
     .fade-in {
@@ -249,7 +282,6 @@
     @media (max-width: 768px) {
       .hero { padding-top: 160px; }
       nav { display: none; }
-      .cta-buttons { flex-direction: column; padding: 0 10%; }
     }
   </style>
 </head>
@@ -332,7 +364,7 @@
     <div class="card fade-in">
       <div class="badge">PAYMENTS</div>
       <h3>Lipa</h3>
-      <p>Borderless payment orchestration and settlement intelligence designed for fragmented African markets.</p>
+      <p>Borderless payment orchestration and settlement intelligence designed for fragmented African markets and SMEs.</p>
     </div>
   </div>
 </section>
@@ -340,39 +372,83 @@
 <section id="capabilities">
   <div class="section-title">
     <h2 class="fade-in">Core Capabilities</h2>
-    <p class="fade-in">What we build at scale — today and tomorrow.</p>
+    <p class="fade-in">Tap a capability to explore our technical depth.</p>
   </div>
 
-  <div class="grid">
-    <div class="card fade-in">Large-scale AI dataset creation & labeling</div>
-    <div class="card fade-in">Behavioral & multimodal ML pipelines</div>
-    <div class="card fade-in">Fintech APIs & payment orchestration</div>
-    <div class="card fade-in">Ultra-low-latency streaming infrastructure</div>
-    <div class="card fade-in">Agentic automation & workflow intelligence</div>
-    <div class="card fade-in">African-language NLP & cultural context models</div>
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+    
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Large-scale AI dataset creation & labeling</strong>
+      <div class="details">
+        We deploy specialized labeling teams and automated synthetic data pipelines to build proprietary, high-quality training sets for LLMs and Computer Vision models.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Behavioral & multimodal ML pipelines</strong>
+      <div class="details">
+        Architecting production-ready MLops that process video, audio, and text simultaneously to predict consumer behavior and automate complex decision-making.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Fintech APIs & payment orchestration</strong>
+      <div class="details">
+        Integrating fragmented African payment rails into a single, borderless API layer for multi-currency settlement and embedded finance.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>High-performance mobile & web engineering</strong>
+      <div class="details">
+        Building ultra-lean, mobile-first applications optimized for low-bandwidth environments without compromising on premium UX.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Ultra-low-latency streaming infrastructure</strong>
+      <div class="details">
+        Custom WebRTC and CDN configurations designed to deliver sub-second latency for live commerce and interactive media across the continent.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Agentic automation & workflow intelligence</strong>
+      <div class="details">
+        Building "Agentic" systems that don't just suggest actions, but execute them—compressing operational costs and speeding up time-to-market.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>Cloud-native DevOps & zero-trust security</strong>
+      <div class="details">
+        Deploying secure, scalable infrastructure with automated CI/CD pipelines and rigorous data protection protocols for sovereign safety.
+      </div>
+    </div>
+
+    <div class="card capability-card fade-in" onclick="this.classList.toggle('expanded')">
+      <strong>African-language NLP & cultural models</strong>
+      <div class="details">
+        Developing specialized language models that understand regional dialects and cultural nuances, bridging the gap between global AI and local context.
+      </div>
+    </div>
+
   </div>
 </section>
 
 <footer>
-  © 2026 JAKEY Limited • Intelligent Digital Venture Studio<br>
-  Proudly built in Nairobi, Kenya
+  © 2026 JAKEY Limited <br>
+  
 </footer>
 
 <script>
-  // 1. Particle Background Animation
+  // 1. Particle Background
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   class Particle {
-    constructor() {
-      this.reset();
-    }
+    constructor() { this.reset(); }
     reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
@@ -381,64 +457,37 @@
       this.speedY = (Math.random() - 0.5) * 0.5;
     }
     update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
+      this.x += this.speedX; this.y += this.speedY;
       if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
       if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
     }
     draw() {
       ctx.fillStyle = 'rgba(0, 255, 213, 0.4)';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
     }
   }
-
   function init() {
     resize();
     for (let i = 0; i < 100; i++) particles.push(new Particle());
   }
-
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
+    particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animate);
   }
-
   window.addEventListener('resize', resize);
   init(); animate();
 
-  // 2. Scroll Header Logic
+  // 2. Scroll Logic
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
   });
 
-  // 3. Scroll Reveal Logic
+  // 3. Reveal Logic
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // 4. Card Tilt Effect
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const xPercent = (x / rect.width - 0.5) * 10;
-      const yPercent = (y / rect.height - 0.5) * 10;
-      card.style.transform = `perspective(1000px) rotateX(${-yPercent}deg) rotateY(${xPercent}deg) translateY(-5px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
-    });
-  });
 </script>
 
 </body>
